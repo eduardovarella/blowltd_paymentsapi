@@ -1,5 +1,6 @@
 const expect = require('chai').expect;
 const axios = require('axios');
+const _ = require('lodash');
 
 describe('Testing API endpoints ', () => {
 
@@ -13,28 +14,28 @@ describe('Testing API endpoints ', () => {
         const url = `${basePath}/payments`;
         const response = await api.get(url, { headers });
 
-        expect(response.status).toEqual(200);
-        expect(_.isArray(response.data)).toBe(true);
-        expect(response.data).toHaveLength(10);
+        expect(response.status).to.equal(200);
+        expect(_.isArray(response.data)).to.equal(true);
+        expect(response.data.length).to.equal(10);
     });
 
     test(`Should return an existinct specific payment`, async () => {
         const url = `${basePath}/payments/4ee3a8d8-ca7b-4290-a52c-dd5b6165ec43`;
         const response = await api.get(url, { headers });
 
-        expect(response.status).toEqual(200);
-        expect(typeof response.data).toBe('object');
-        expect(response.data.type).toEquals("Payment");
-        expect(response.data.id).toEquals("4ee3a8d8-ca7b-4290-a52c-dd5b6165ec43");
-        expect(response.data.version).toEquals(0);
-        expect(response.data.organisation_id).toEquals("743d5b63-8e6f-432e-a8fa-c5d8d2ee5fcb");
+        expect(response.status).to.equal(200);
+        expect(typeof response.data).to.equal('object');
+        expect(response.data.type).to.equals("Payment");
+        expect(response.data.id).to.equals("4ee3a8d8-ca7b-4290-a52c-dd5b6165ec43");
+        expect(response.data.version).to.equals(0);
+        expect(response.data.organisation_id).to.equals("743d5b63-8e6f-432e-a8fa-c5d8d2ee5fcb");
     });
 
     test(`Should return 404 when requested payment does not exist`, async () => {
         const url = `${basePath}/payments/1234`;
         const response = await api.get(url, { headers });
 
-        expect(response.status).toEqual(404);
+        expect(response.status).to.equal(404);
     });
 
     test(`Should create a payment`, async () => {
@@ -106,9 +107,9 @@ describe('Testing API endpoints ', () => {
 
         let response = await api.post(url, payload, { headers });
 
-        expect(response.status).toEqual(200);
-        expect(typeof response.data).toBe('object');
-        expect(response.data.id).not.to.be.null;
+        expect(response.status).to.equal(200);
+        expect(typeof response.data).to.equal('object');
+        expect(response.data.id).not.to.be.undefined;
         expect(response.data.id).not.to.be.empty;
         
         payload.id = response.data.id;
@@ -116,8 +117,8 @@ describe('Testing API endpoints ', () => {
 
         url = `${basePath}/payments/${payload.id}`;
         response = await api.get(url, { headers });
-        expect(response.status).toEqual(200);
-        expect(typeof response.data).toBe('object');
+        expect(response.status).to.equal(200);
+        expect(typeof response.data).to.equal('object');
         expect(response.data).toStrictEqual(payload);
     });
 
@@ -127,7 +128,7 @@ describe('Testing API endpoints ', () => {
 
         let response = await api.post(url, payload, { headers });
 
-        expect(response.status).toEqual(400);
+        expect(response.status).to.equal(400);
     });
 
     test(`Should update a payment`, async () => {
@@ -200,15 +201,15 @@ describe('Testing API endpoints ', () => {
 
         let response = await api.put(url, payload, { headers });
 
-        expect(response.status).toEqual(200);
-        expect(typeof response.data).toBe('object');
-        expect(response.data).toStrictEqual(payload);
+        expect(response.status).to.equal(200);
+        expect(typeof response.data).to.equal('object');
+        expect(response.data).to.equal(payload);
 
         url = `${basePath}/payments/${payload.id}`;
         response = await api.get(url, { headers });
-        expect(response.status).toEqual(200);
-        expect(typeof response.data).toBe('object');
-        expect(response.data).toStrictEqual(payload);
+        expect(response.status).to.equal(200);
+        expect(typeof response.data).to.equal('object');
+        expect(response.data).to.equal(payload);
     });
 
     test(`Should return bad request when update payload is invalid`, async () => {
@@ -217,7 +218,7 @@ describe('Testing API endpoints ', () => {
 
         let response = await api.put(url, payload, { headers });
 
-        expect(response.status).toEqual(400);
+        expect(response.status).to.equal(400);
     });
 
     test(`Should delete a payment`, async () => {
@@ -290,10 +291,10 @@ describe('Testing API endpoints ', () => {
 
         let response = await api.delete(url, { headers });
 
-        expect(response.status).toEqual(200);
+        expect(response.status).to.equal(200);
         
         url = `${basePath}/payments/${payload.id}`;
         response = await api.get(url, { headers });
-        expect(response.status).toEqual(404);
+        expect(response.status).to.equal(404);
     });
 });

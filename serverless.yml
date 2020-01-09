@@ -1,0 +1,82 @@
+service: payments-api-evarella
+
+provider:
+  name: aws
+  stage: local
+  runtime: nodejs10.x
+  environment:
+      STAGE: ${opt:stage}
+      PGUSER: ${env:${opt:stage}_PGUSER}
+      PGHOST: ${env:${opt:stage}_PGHOST}
+      PGPASSWORD: ${env:${opt:stage}_PGPASSWORD}
+      PGDATABASE: ${env:${opt:stage}_PGDATABASE}
+      PGPORT: ${env:${opt:stage}_PGPORT}
+plugins:
+  - serverless-offline
+  - serverless-prune-plugin
+
+custom:
+  serverless-offline:
+    port: 4000
+  prune:
+      automatic: true
+      number: 1
+
+functions:
+  listPayments:
+    handler: src/controllers/payments.list
+    events:
+      - http:
+          path: payments/
+          method: GET
+          cors: true
+  getPayment:
+    handler: src/controllers/payments.get
+    events:
+      - http:
+          path: payments/{paymentId}
+          method: GET
+          cors: true
+          request:
+            parameters:
+              paths:
+                paymentId: true
+  createPayment:
+    handler: src/controllers/payments.create
+    events:
+      - http:
+          path: payments/
+          method: POST
+          cors: true
+  updatePayment:
+    handler: src/controllers/payments.update
+    events:
+      - http:
+          path: payments/{paymentId}
+          method: PUT
+          cors: true
+          request:
+            parameters:
+              paths:
+                paymentId: true
+  deletePayment:
+    handler: src/controllers/payments.delete
+    events:
+      - http:
+          path: payments/{paymentId}
+          method: DELETE
+          cors: true
+          request:
+            parameters:
+              paths:
+                paymentId: true
+resources:
+  Outputs:
+    ApiUrl:
+      Description: "The API Gateway URL"
+      Value:
+        Fn::Join:
+          - ""
+          - - "https://"
+            - Ref: ApiGatewayRestApi
+            - ".execute-api.${self:provider.region}.amazonaws.com/${opt:stage}"
