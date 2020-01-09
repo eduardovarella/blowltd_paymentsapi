@@ -1,0 +1,23 @@
+{
+  "name": "blowltd_paymentsapi",
+  "version": "1.0.0",
+  "description": "Payments API for blow LTD",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --detectOpenHandles --forceExit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eduardovarella/blowltd_paymentsapi.git"
+  },
+  "author": "Eduardo Varella",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eduardovarella/blowltd_paymentsapi/issues"
+  },
+  "homepage": "https://github.com/eduardovarella/blowltd_paymentsapi#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "jest": "^24.9.0"
+  }
+}
