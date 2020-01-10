@@ -4,7 +4,7 @@
   "description": "Payments API for blow LTD",
   "main": "index.js",
   "scripts": {
-    "start": "serverless --stage=local offline start",
+    "start": "npx sequelize-cli db:migrate && serverless --stage=local offline start",
     "test": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && jest --detectOpenHandles --forceExit"
   },
   "repository": {
