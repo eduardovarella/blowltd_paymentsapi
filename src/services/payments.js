@@ -1,7 +1,9 @@
+const Payment = require('../../models').Payment;
+
 module.exports.list = async () => {
 
     try {
-        return [];
+        return await Payment.findAll();
     }
     catch (error) {
         throw error
@@ -11,7 +13,7 @@ module.exports.list = async () => {
 module.exports.get = async (id) => {
 
     try {
-        return {id};
+        return await Payment.findByPk(id);
     }
     catch (error) {
         throw error;
@@ -21,7 +23,8 @@ module.exports.get = async (id) => {
 module.exports.create = async (payload) => {
 
     try {
-        return payload;
+        payload.id = require('uuid/v1')();
+        return await Payment.create(payload);
     }
     catch (error) {
         throw error;
@@ -31,7 +34,12 @@ module.exports.create = async (payload) => {
 module.exports.update = async (id, payload) => {
 
     try {
-        return payload;
+        await Payment.update(payload, {
+            where: {
+                id
+              }
+        });
+        return this.get(id);
     }
     catch (error) {
         throw error;
@@ -41,7 +49,11 @@ module.exports.update = async (id, payload) => {
 module.exports.delete = async (id) => {
 
     try {
-        return id;
+        return await Payment.destroy({
+            where: {
+              id
+            }
+          });
     }
     catch (error) {
         throw error;

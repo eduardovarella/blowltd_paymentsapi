@@ -18,7 +18,7 @@ module.exports.get = async (event) => {
     try {
         const paymentId = event.pathParameters.paymentId;
         const data = await PaymentsService.get(paymentId);
-        return APIGatewayUtils.buildSuccessResponse(data);
+        return data ? APIGatewayUtils.buildSuccessResponse(data) : APIGatewayUtils.buildErrorResponse(404, "Payment not found");
     }
     catch (error) {
         console.log(error);
@@ -35,7 +35,12 @@ module.exports.create = async (event) => {
     }
     catch (error) {
         console.log(error);
-        return APIGatewayUtils.buildErrorResponse(500, error.toString());
+        if (error.name && error.name === "SequelizeValidationError") {
+            return APIGatewayUtils.buildErrorResponse(400, error.toString());
+        }
+        else {
+            return APIGatewayUtils.buildErrorResponse(500, error.toString());
+        }
     }
 };
 
@@ -49,7 +54,12 @@ module.exports.update = async (event) => {
     }
     catch (error) {
         console.log(error);
-        return APIGatewayUtils.buildErrorResponse(500, error.toString());
+        if (error.name && error.name === "SequelizeValidationError") {
+            return APIGatewayUtils.buildErrorResponse(400, error.toString());
+        }
+        else {
+            return APIGatewayUtils.buildErrorResponse(500, error.toString());
+        }
     }
 };
 
