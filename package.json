@@ -24,7 +24,7 @@
     "sequelize-cli": "^5.5.1"
   },
   "dependencies": {
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "mysql2": "^2.1.0",
     "pg": "^7.17.0",
     "pg-hstore": "^2.3.3",
